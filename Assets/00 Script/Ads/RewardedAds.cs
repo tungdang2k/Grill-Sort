@@ -7,6 +7,7 @@ public class RewardedAds : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowLi
     [SerializeField] private string m_adUnitId = "Rewarded-ads";
 
     bool isReady = false;
+    bool showWhenLoaded;
     Action onReward;
 
     public void Init()
@@ -24,22 +25,39 @@ public class RewardedAds : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowLi
     {
         if (!isReady)
         {
+            if (showWhenLoaded) return;
+
+            onReward = rewardCallback;
+            showWhenLoaded = true;
             Load();
             return;
         }
 
         onReward = rewardCallback;
+        isReady = false;
         Advertisement.Show(m_adUnitId, this);
     }
 
     public void OnUnityAdsAdLoaded(string id)
     {
-        if (id == m_adUnitId)
-            isReady = true;
+        if (id != m_adUnitId) return;
+
+        isReady = true;
+        if (!showWhenLoaded) return;
+
+        showWhenLoaded = false;
+        Action rewardCallback = onReward;
+        Show(rewardCallback);
     }
 
     public void OnUnityAdsFailedToLoad(string id, UnityAdsLoadError error, string msg)
     {
+        if (id == m_adUnitId)
+        {
+            isReady = false;
+            showWhenLoaded = false;
+            onReward = null;
+        }
         Debug.LogError("Rewarded Load Fail: " + msg);
     }
 
@@ -47,9 +65,11 @@ public class RewardedAds : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowLi
     {
         if (id == m_adUnitId)
         {
+            Action rewardCallback = onReward;
+            onReward = null;
             if (state == UnityAdsShowCompletionState.COMPLETED)
             {
-                onReward?.Invoke();
+                rewardCallback?.Invoke();
             }
 
             isReady = false;
@@ -57,7 +77,16 @@ public class RewardedAds : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowLi
         }
     }
 
-    public void OnUnityAdsShowFailure(string id, UnityAdsShowError error, string msg) { }
+    public void OnUnityAdsShowFailure(string id, UnityAdsShowError error, string msg)
+    {
+        if (id != m_adUnitId) return;
+
+        onReward = null;
+        showWhenLoaded = false;
+        isReady = false;
+        Debug.LogError("Rewarded Show Fail: " + msg);
+        Load();
+    }
     public void OnUnityAdsShowStart(string id) { }
     public void OnUnityAdsShowClick(string id) { }
 }

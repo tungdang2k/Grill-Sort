@@ -16,39 +16,47 @@ public class DropDragCtrl : MonoBehaviour
     private FoodSlot m_previewSlot; 
     private int m_pointerID = -1;
 
-    private void Start()
+    private void Awake()
     {
-             
+        if (m_imgFoodDrag == null)
+        {
+            Debug.LogError("DropDragCtrl requires a drag Image reference.", this);
+            enabled = false;
+            return;
+        }
+
         m_imgFoodDrag.gameObject.SetActive(false);
         m_imgFoodDrag.raycastTarget = false;
-
     }
 
-    private void Update()
+    private void OnDisable()
     {
-        if (m_state != DragState.Dragging) return;
+        if (m_state == DragState.Idle) return;
 
-        
+        m_imgFoodDrag?.transform.DOKill();
+        ClearPreview();
+        if (m_sourceSlot != null)
+            m_sourceSlot.OnActiveFood(true);
+        if (m_imgFoodDrag != null)
+            m_imgFoodDrag.gameObject.SetActive(false);
+        ResetState();
     }
 
-    public void OnBtnDown(PointerEventData evt)
+    public void OnBtnDown(PointerEventData evt, FoodSlot sourceSlot)
     {
-        if (m_state != DragState.Idle) return;
-
-        FoodSlot slot = GetSlot(evt);
-        if (slot == null || !slot.HasFood()) return;
+        if (m_state != DragState.Idle || sourceSlot == null || !sourceSlot.HasVisibleFood) return;
 
         // ── Lock drag ──
         m_state = DragState.Dragging;
         m_pointerID = evt.pointerId;
 
-        m_sourceSlot = slot;
+        m_sourceSlot = sourceSlot;
 
         AudioManager.Instance?.PlaySFX(SFXType.Click);
 
         // show dummy
         m_sourceSlot.OnActiveFood(false);
-        DummyShow(m_sourceSlot.GetSpriteFood(), evt.position);
+        DummyShow(m_sourceSlot.GetSpriteFood(), evt.position, evt.pressEventCamera);
         m_imgFoodDrag.transform.DOScale(Vector3.one * 1.1f, 0.15f);
     }
 
@@ -58,7 +66,7 @@ public class DropDragCtrl : MonoBehaviour
         if (evt.pointerId != m_pointerID) return;
 
 
-        DummyMoveTo(evt.position);
+        DummyMoveTo(evt.position, evt.pressEventCamera);
         UpdatePreview(ResolveTarget(evt));
     }
 
@@ -67,6 +75,8 @@ public class DropDragCtrl : MonoBehaviour
         if (m_state != DragState.Dragging) return;
         if (evt.pointerId != m_pointerID) return;
 
+        // Re-evaluate the release position in case no final OnDrag event was sent.
+        UpdatePreview(ResolveTarget(evt));
         m_state = DragState.Animating;
         AudioManager.Instance?.PlaySFX(SFXType.Smoke);
 
@@ -83,6 +93,12 @@ public class DropDragCtrl : MonoBehaviour
     {
         FoodSlot src = m_sourceSlot;  
 
+        if (dest == null || m_sourceSlot == null || dest == m_sourceSlot)
+        {
+            ReturnToSource();
+            return;
+        }
+
         dest.OnHideFood();             // hide preview 
 
         m_imgFoodDrag.transform.DOKill();
@@ -91,10 +107,17 @@ public class DropDragCtrl : MonoBehaviour
             .OnComplete(() =>
             {
                 DummyHide();
-                dest.OnSetSlot(src.GetSpriteFood());
-                dest.OnActiveFood(true);
-                dest.OnCheckMerge();
-                src.OnCheckPrepareTray();
+                if (src != null && dest != null && dest.isActiveAndEnabled)
+                {
+                    dest.OnSetSlot(src.GetSpriteFood());
+                    dest.OnActiveFood(true);
+                    dest.OnCheckMerge();
+                    src.OnCheckPrepareTray();
+                }
+                else if (src != null)
+                {
+                    src.OnActiveFood(true);
+                }
                 ResetState();
             });
     }
@@ -110,7 +133,8 @@ public class DropDragCtrl : MonoBehaviour
             .OnComplete(() =>
             {
                 DummyHide();
-                src.OnActiveFood(true);
+                if (src != null)
+                    src.OnActiveFood(true);
                 ResetState();
             });
     }
@@ -143,11 +167,12 @@ public class DropDragCtrl : MonoBehaviour
 
         if (!hover.HasFood()) return hover;
 
-        return hover.GetSlotNull;  
+        return hover.GetSlotNull(m_sourceSlot);
     }
 
-    private void DummyShow(Sprite sprite, Vector2 screenPos)
+    private void DummyShow(Sprite sprite, Vector2 screenPos, Camera eventCamera)
     {
+        if (sprite == null) return;
         m_imgFoodDrag.sprite = sprite;
         m_imgFoodDrag.preserveAspect = true;
 
@@ -157,18 +182,23 @@ public class DropDragCtrl : MonoBehaviour
         rt.localRotation = Quaternion.identity;
 
         m_imgFoodDrag.gameObject.SetActive(true);
-        DummyMoveTo(screenPos);
+        DummyMoveTo(screenPos, eventCamera);
     }
 
-    private void DummyMoveTo(Vector2 screenPos)
+    private void DummyMoveTo(Vector2 screenPos, Camera eventCamera)
     {
-        if (m_imgFoodDrag.canvas == null) return;
+        Canvas canvas = m_imgFoodDrag.canvas;
+        RectTransform parentRect = m_imgFoodDrag.rectTransform.parent as RectTransform;
+        if (canvas == null || parentRect == null) return;
+
+        Camera camera = canvas.renderMode == RenderMode.ScreenSpaceOverlay
+            ? null
+            : (eventCamera != null ? eventCamera : canvas.worldCamera);
 
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            m_imgFoodDrag.canvas.transform as RectTransform,
-            screenPos, null, out Vector2 local);
+            parentRect, screenPos, camera, out Vector2 local);
 
-        m_imgFoodDrag.rectTransform.localPosition = local;
+        m_imgFoodDrag.rectTransform.anchoredPosition = local;
     }
 
     private void DummyHide()
@@ -189,6 +219,6 @@ public class DropDragCtrl : MonoBehaviour
     private static FoodSlot GetSlot(PointerEventData evt)
     {
         var obj = evt.pointerCurrentRaycast.gameObject;
-        return obj != null ? obj.GetComponent<FoodSlot>() : null;
+        return obj != null ? obj.GetComponentInParent<FoodSlot>() : null;
     }
 }

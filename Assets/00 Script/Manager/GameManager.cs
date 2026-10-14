@@ -74,6 +74,11 @@ public class GameManager : Singleton<GameManager>
         m_mergeCount = 0;        
         m_allFood = 0;
         LoadLevel(m_currentLevel);
+        if (CurrentLevelData == null)
+        {
+            m_isGameEnded = true;
+            return;
+        }
         m_levelInitializer.Init(
          CurrentLevelData,
          m_listGrill,
@@ -84,7 +89,22 @@ public class GameManager : Singleton<GameManager>
     }
     private void LoadLevel(int level)
     {
+        if (m_levelLoader == null)
+        {
+            Debug.LogError("GameManager is missing its LevelLoader reference.", this);
+            CurrentLevelData = null;
+            return;
+        }
+
         CurrentLevelData = m_levelLoader.Load(level);
+        if (CurrentLevelData == null || CurrentLevelData.spawnWareData == null ||
+            CurrentLevelData.boardData == null || CurrentLevelData.boardData.listTrayData == null)
+        {
+            Debug.LogError($"Level {level} could not be loaded or is missing required data.", this);
+            CurrentLevelData = null;
+            return;
+        }
+
         m_levelSeconds = CurrentLevelData.levelSeconds;
         m_allFood = CurrentLevelData.spawnWareData.totalWare;
 
@@ -102,7 +122,9 @@ public class GameManager : Singleton<GameManager>
     }
     private void CompleteLevel()
     {
-        m_currentLevel++;
+        int nextLevel = m_currentLevel + 1;
+        if (m_levelLoader != null && m_levelLoader.HasLevel(nextLevel))
+            m_currentLevel = nextLevel;
 
         PlayerPrefs.SetInt(CONSTANTS.LEVEL, m_currentLevel);
         PlayerPrefs.Save();
@@ -116,6 +138,7 @@ public class GameManager : Singleton<GameManager>
     
     public void OnMinusFood()
     {
+        if (m_isGameEnded) return;
         
         m_allFood -= 3;
         m_mergeCount++;

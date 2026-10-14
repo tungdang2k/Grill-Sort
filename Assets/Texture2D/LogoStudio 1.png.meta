@@ -1,0 +1,241 @@
+fileFormatVersion: 2
+guid: 670c26903084f1e4d9cdd9571e9818b8
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 4693053315854491074
+    second: LogoStudio 1_0
+  - first:
+      213: -3147367209957846058
+    second: LogoStudio 1_1
+  - first:
+      213: 1053358319911267539
+    second: LogoStudio 1_2
+  - first:
+      213: 3631499215679901927
+    second: LogoStudio 1_3
+  - first:
+      213: 7489666900144813886
+    second: LogoStudio 1_4
+  - first:
+      213: 4015490217512240904
+    second: LogoStudio 1_5
+  - first:
+      213: 9048837316774645583
+    second: LogoStudio 1_6
+  - first:
+      213: 8429174161227217883
+    second: LogoStudio 1_7
+  - first:
+      213: -4782524312364465116
+    second: LogoStudio 1_8
+  - first:
+      213: -767058573264478573
+    second: LogoStudio 1_9
+  - first:
+      213: -7698215801639235455
+    second: LogoStudio 1_10
+  - first:
+      213: 581822676602310267
+    second: LogoStudio 1_11
+  - first:
+      213: -6103512127043182426
+    second: LogoStudio 1_12
+  - first:
+      213: 6219729765556146592
+    second: LogoStudio 1_13
+  - first:
+      213: 6225379279444143808
+    second: LogoStudio 1_14
+  - first:
+      213: 2005584547482633553
+    second: LogoStudio 1_15
+  - first:
+      213: 4314300112063799728
+    second: LogoStudio 1_16
+  - first:
+      213: -3707341192542556807
+    second: LogoStudio 1_17
+  - first:
+      213: -1689307069513844930
+    second: LogoStudio 1_18
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: LogoStudio 1_6
+      rect:
+        serializedVersion: 2
+        x: 159
+        y: 57
+        width: 1043
+        height: 586
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f4fc6a8c89de39d70800000000000000
+      internalID: 9048837316774645583
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 3f6238aedd2629a4c8d1999868337dfd
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      LogoStudio 1_0: 4693053315854491074
+      LogoStudio 1_1: -3147367209957846058
+      LogoStudio 1_10: -7698215801639235455
+      LogoStudio 1_11: 581822676602310267
+      LogoStudio 1_12: -6103512127043182426
+      LogoStudio 1_13: 6219729765556146592
+      LogoStudio 1_14: 6225379279444143808
+      LogoStudio 1_15: 2005584547482633553
+      LogoStudio 1_16: 4314300112063799728
+      LogoStudio 1_17: -3707341192542556807
+      LogoStudio 1_18: -1689307069513844930
+      LogoStudio 1_2: 1053358319911267539
+      LogoStudio 1_3: 3631499215679901927
+      LogoStudio 1_4: 7489666900144813886
+      LogoStudio 1_5: 4015490217512240904
+      LogoStudio 1_6: 9048837316774645583
+      LogoStudio 1_7: 8429174161227217883
+      LogoStudio 1_8: -4782524312364465116
+      LogoStudio 1_9: -767058573264478573
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

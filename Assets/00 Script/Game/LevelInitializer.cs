@@ -19,6 +19,12 @@ public class LevelInitializer
     List<GrillStation> bonusGrills)
     {
 
+        if (levelData == null || levelData.boardData == null ||
+            levelData.boardData.listTrayData == null || levelData.spawnWareData == null)
+        {
+            Debug.LogError("Cannot initialize a level with missing board or food data.");
+            return;
+        }
 
         if (GameManager.Instance.CurrentLevel == 1)
         {
@@ -27,6 +33,12 @@ public class LevelInitializer
         }
 
         var allTrayData = levelData.boardData.listTrayData;
+        if (levelData.spawnWareData.listLayerData == null ||
+            levelData.spawnWareData.listLayerData.Count == 0)
+        {
+            Debug.LogError($"Level {levelData.level} has no layer data.");
+            return;
+        }
         // filter grill
         List<GrillStation> activeGrills = new List<GrillStation>();
         List<GrillStation> lockedGrills = new List<GrillStation>();
@@ -38,13 +50,19 @@ public class LevelInitializer
             var t = allTrayData[i];
             var grill = listGrills[i];
 
+            if (t == null)
+            {
+                grill.SetNullGrill();
+                continue;
+            }
+
             if (t.id == "bonus_tray")
             {
                 listGrills[i].SetNullGrill();
                 bonusGrills.Add(grill);
                 continue;
             }
-            if (t == null || string.IsNullOrEmpty(t.id) || (t.id != "normal_tray" && t.id != "target_tray"))
+            if (string.IsNullOrEmpty(t.id) || (t.id != "normal_tray" && t.id != "target_tray"))
             {
                 grill.SetNullGrill();
                 continue;

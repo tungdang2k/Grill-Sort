@@ -21,6 +21,9 @@ public class FoodSlot : MonoBehaviour, IBeginDragHandler,
     public Image ImgFood => m_imgFood;
 
     public bool IsLocked { get; private set; }
+    public bool HasVisibleFood => !IsLocked && m_imgFood != null &&
+                                  m_imgFood.gameObject.activeInHierarchy &&
+                                  m_imgFood.sprite != null && m_imgFood.color == m_nomalColor;
 
     private void Awake()
     {
@@ -39,19 +42,33 @@ public class FoodSlot : MonoBehaviour, IBeginDragHandler,
     public void Unlock() => IsLocked = false;
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (!HasFood()) return;
+        if (!HasVisibleFood) return;
 
-        m_dropDragCtrl.OnBtnDown(eventData);
+        DropDragCtrl dragCtrl = GetDropDragCtrl();
+        if (dragCtrl != null)
+            dragCtrl.OnBtnDown(eventData, this);
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        m_dropDragCtrl.OnHasDrag(eventData);
+        DropDragCtrl dragCtrl = GetDropDragCtrl();
+        if (dragCtrl != null)
+            dragCtrl.OnHasDrag(eventData);
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        m_dropDragCtrl.OnBtnUp(eventData);
+        DropDragCtrl dragCtrl = GetDropDragCtrl();
+        if (dragCtrl != null)
+            dragCtrl.OnBtnUp(eventData);
+    }
+
+    private DropDragCtrl GetDropDragCtrl()
+    {
+        if (m_dropDragCtrl == null)
+            m_dropDragCtrl = FindAnyObjectByType<DropDragCtrl>();
+
+        return m_dropDragCtrl;
     }
     private void ApplyLayout()
     {
@@ -125,7 +142,10 @@ public class FoodSlot : MonoBehaviour, IBeginDragHandler,
         return m_imgFood.sprite;
     } 
 
-    public FoodSlot GetSlotNull => m_grillCtrl.GetSlotNull();
+    public FoodSlot GetSlotNull(FoodSlot excludedSlot = null)
+    {
+        return m_grillCtrl != null ? m_grillCtrl.GetSlotNull(excludedSlot) : null;
+    }
 
     public void OnCheckMerge()
     {

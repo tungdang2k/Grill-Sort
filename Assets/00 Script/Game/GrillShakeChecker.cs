@@ -46,7 +46,7 @@ public class GrillShakeChecker : MonoBehaviour
 
             foreach (var slot in grill.totalSlot)
             {
-                if (!slot.HasFood())
+                if (!slot.HasVisibleFood)
                     continue;
 
                 string name = slot.GetSpriteFood().name;

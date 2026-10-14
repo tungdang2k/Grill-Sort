@@ -162,11 +162,11 @@ public class GrillStation : MonoBehaviour
     }
 
 
-    public FoodSlot GetSlotNull()
+    public FoodSlot GetSlotNull(FoodSlot excludedSlot = null)
     {
         for (int i = 0; i < m_totalSlot.Count; i++)
         {
-            if (!m_totalSlot[i].HasFood())
+            if (m_totalSlot[i] != excludedSlot && !m_totalSlot[i].HasFood())
             {
                 return m_totalSlot[i];
             }
@@ -177,10 +177,11 @@ public class GrillStation : MonoBehaviour
     public void OnCheckMerge()
     {
 
+        if (m_totalSlot.Count == 0 || m_totalSlot.Any(slot => slot.IsLocked)) return;
         if (GetSlotNull() != null) return;
         if (!CanMerge()) return;
 
-        AudioManager.Instance.PlaySFX(SFXType.Merge);
+        AudioManager.Instance?.PlaySFX(SFXType.Merge);
 
         List<Image> mergeItems = m_totalSlot
             .Where(s => s.HasFood())
@@ -297,6 +298,8 @@ public class GrillStation : MonoBehaviour
 
     private bool CanMerge()
     {
+        if (m_totalSlot.Count == 0 || m_totalSlot.Any(slot => !slot.HasVisibleFood))
+            return false;
 
         for (int i = 1; i < m_totalSlot.Count; i++)
         {
@@ -325,7 +328,7 @@ public class GrillStation : MonoBehaviour
 
         for(int i = 0; i < m_totalSlot.Count; i++)
         {
-            if (m_totalSlot[i].HasFood())
+            if (m_totalSlot[i].HasVisibleFood)
             {
                 list.Add(m_totalSlot[i].ImgFood);
             }

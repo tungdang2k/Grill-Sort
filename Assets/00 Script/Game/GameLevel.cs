@@ -25,6 +25,7 @@ public class GameLevel : MonoBehaviour
 
     private void Start()
     {
+        if (!GameManager.HasInstance) return;
         m_totalItem = GameManager.Instance.AllFood;
         
        
@@ -39,7 +40,7 @@ public class GameLevel : MonoBehaviour
     }
     private void UpdatelevelPercent()
     {
-        float value = (float)m_currentItem / m_totalItem;
+        float value = m_totalItem > 0 ? (float)m_currentItem / m_totalItem : 0f;
         m_levelPercent.value = value;
 
         m_percentText.text = Mathf.RoundToInt(value * 100) + "%";

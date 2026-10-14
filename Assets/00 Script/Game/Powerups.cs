@@ -195,7 +195,7 @@ public class Powerups : MonoBehaviour
 
             foreach (var slot in grill.totalSlot)
             {
-                if (slot.HasFood())
+                if (slot.HasVisibleFood)
                     result.Add((slot.ImgFood, slot, null));
             }
 
@@ -230,7 +230,10 @@ public class Powerups : MonoBehaviour
         }
 
         if (result.Count <= 1)
+        {
+            m_isUsingPowerup = false;
             yield break;
+        }
 
         yield return new WaitForSeconds(0.1f);
         float jumpTime = 0.25f;

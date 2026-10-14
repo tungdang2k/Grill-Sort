@@ -41,6 +41,13 @@ public class TrayItem : MonoBehaviour
 
     public  void OnSetFood(List<Sprite> items)
     {
+        if (items == null) return;
+
+        foreach (var img in m_FoodList)
+        {
+            img.gameObject.SetActive(false);
+            img.sprite = null;
+        }
 
         if (items.Count <= m_FoodList.Count)
         {
