@@ -929,6 +929,7 @@ GameObject:
   - component: {fileID: 2068909626}
   - component: {fileID: 2068909628}
   - component: {fileID: 2068909627}
+  - component: {fileID: 2068909629}
   m_Layer: 5
   m_Name: TextLoad
   m_TagString: Untagged
@@ -1054,6 +1055,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2068909625}
   m_CullTransparentMesh: 1
+--- !u!114 &2068909629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2068909625}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 590f4731ac08f7f43a98297cf9db7e55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sourceKey: Loading....
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

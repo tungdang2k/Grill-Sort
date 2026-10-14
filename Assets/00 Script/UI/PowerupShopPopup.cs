@@ -24,7 +24,7 @@ public class PowerupShopPopup : MonoBehaviour
         currentPowerUpId = id;
         onSuccess = onSuccessCallback;
 
-        titleTxt.text = "Storage";
+        titleTxt.text = LocalizationManager.Get("Storage");
 
         m_panel.SetActive(true);
 
